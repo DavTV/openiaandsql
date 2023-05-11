@@ -19,7 +19,7 @@ export default async function (req, res) {
       error: {
         message: "OpenAI API key not configured, please follow instructions in README.md",
       },
-      result: completion.data.choices[0].text, query, message: "Conexión con api fallada." , exito: false
+      result: completion.data.choices[0].text, query, message: "Conexión con api fallada por apiKey." , exito: false
     });
     return;
   }
@@ -41,7 +41,8 @@ const connection = mysql.createConnection({
       model: "text-davinci-003",
       prompt: generatePrompt(query),
       temperature: 0.6,
-      max_tokens: 200
+      max_tokens: 200,
+      maxDuration: 60
     });
    
     connection.connect(function(error){
