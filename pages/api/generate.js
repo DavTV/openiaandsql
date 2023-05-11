@@ -8,7 +8,8 @@ server.use(bodyParser.json());
 
 
 const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+  // apiKey: process.env.OPENAI_API_KEY,
+  apiKey: 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,
 });
 const openai = new OpenAIApi(configuration);
 
@@ -17,7 +18,8 @@ export default async function (req, res) {
     res.status(500).json({
       error: {
         message: "OpenAI API key not configured, please follow instructions in README.md",
-      }
+      },
+      result: completion.data.choices[0].text, query, message: "Conexión con api fallada." , exito: false
     });
     return;
   }
