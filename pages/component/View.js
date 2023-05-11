@@ -1,6 +1,8 @@
 import {useEffect,useState} from 'react';
 const View = ({result, queryResponse,dataQuery}) => {
   const [theads, setTheads] = useState([]);
+  // ver si se soluciona sisn hacer esto
+  const [dataRender, setDataRender] = useState(dataQuery||[]);
   const ConvertionArray=()=>{
   let ths = [];
    const item = dataQuery[0];
@@ -38,7 +40,7 @@ useEffect(() => {
           </thead>
           <tbody>
             {
-              dataQuery.length >0 && dataQuery.map((item,index)=>{
+              dataRender.length >0 && dataRender.map((item,index)=>{
                 // let claves = Object.keys(item); // claves = ["nombre", "color", "macho", "edad"]
                 
                    return <tr key={index+"tr"}>{
