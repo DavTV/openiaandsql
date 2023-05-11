@@ -1,4 +1,11 @@
 import { Configuration, OpenAIApi } from "openai";
+const express = require('express');
+const mysql = require('mysql');
+const bodyParser= require('body-parser');
+const server = express();
+server.use(bodyParser.json());
+
+
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -14,49 +21,81 @@ export default async function (req, res) {
     });
     return;
   }
+  const host = req.body.host,
+  user  = req.body.user,
+  password = req.body.password,
+  database = req.body.database;
 
-  const animal = req.body.animal || '';
-  if (animal.trim().length === 0) {
-    res.status(400).json({
-      error: {
-        message: "Please enter a valid animal",
-      }
-    });
-    return;
-  }
-
+const connection = mysql.createConnection({
+    host:host,
+    user: user,
+    password:password,
+    database: database      
+  })
+  const query = req.body.query;
+  console.log(req.body)
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: generatePrompt(animal),
+      prompt: generatePrompt(query),
       temperature: 0.6,
+      max_tokens: 200
     });
-    res.status(200).json({ result: completion.data.choices[0].text });
-  } catch(error) {
-    // Consider adjusting the error handling logic for your use case
-    if (error.response) {
-      console.error(error.response.status, error.response.data);
-      res.status(error.response.status).json(error.response.data);
-    } else {
-      console.error(`Error with OpenAI API request: ${error.message}`);
-      res.status(500).json({
-        error: {
-          message: 'An error occurred during your request.',
-        }
-      });
-    }
+   
+    connection.connect(function(error){
+      try{
+        if(error){ 
+  
+         
+          res.status(200).json({ result: completion.data.choices[0].text, query, message: "Conexión fallada." , exito: false}) 
+          
+        }else{  
+          // const sql =`SHOW FULL TABLES FROM ${database}`;
+          const sql = completion.data.choices[0].text;
+          connection.query(sql,(error,details)=>{
+            res.status(200).json({ result: completion.data.choices[0].text, query, message: "Conexión exitosa" , exito: true, details}) 
+          
+         })
+     
+      } 
+
+      }catch(x){ 
+        console.log("Contacto.agregarUsuario.connect --Error-- " + x); 
+      } 
+
+    })
+   
+    
+  } catch (error) {
+    console.log(error)
+   
   }
 }
 
-function generatePrompt(animal) {
-  const capitalizedAnimal =
-    animal[0].toUpperCase() + animal.slice(1).toLowerCase();
-  return `Suggest three names for an animal that is a superhero.
+function generatePrompt(query) {
+  const capitalizedquery =
+    query[0].toUpperCase() + query.slice(1).toLowerCase();
+  return `Suggest three names for an query that is a superhero.
 
-Animal: Cat
-Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
-Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: ${capitalizedAnimal}
-Names:`;
+Query: agregar
+Response: 
+    const sql ='INSERT  INTO cursos SET ?';
+    const cursoObjeto={
+        name: req.body.name,
+        slug : req.body.slug,
+        description: req.body.description,
+        categoria: req.body.categoria,
+    };
+
+Query: eliminar
+Response: DELETE FROM cursos WHERE id =1; 
+  
+Query: mostrar
+Response: SELECT * FROM cursos
+
+Query: actualiza
+Response: UPDATE cursos SET name ='david', slug ='dato', description ='esta es una descripción', categoria='libros' WHERE id =2
+
+Query: ${capitalizedquery}
+Response:`;
 }
