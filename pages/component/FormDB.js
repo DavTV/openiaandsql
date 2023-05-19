@@ -1,31 +1,4 @@
-import { useState } from "react";
-
-const FormDB = ({setDatabase,setHost,setUser,setPassword}) => {
-  //   const [user, setUser] = useState('');
-  //   const [host, setHost] = useState('');
-  //   const [password, setPassword] = useState('');
-  //   const [database, setDatabase] = useState('');
-  // const [reponse, setReponse] = useState('');
-
-//  const conectionDatabase= async(event)=>{
-//    event.preventDefault();
-//     try {
-//       const response = await fetch("/api/bd", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({ user,host,password,database }),
-//       });
-
-//       const data = await response.json();
-//       setReponse(data.message)
-//       if (response.status !== 200) {
-//         throw data.error || new Error(`Request failed with status ${response.status}`);
-//       }
-//  }catch(error){
-
-//  }}
+const FormDB = ({setDatabase,setHost,setUser,setPassword,setSgbd}) => {
     return ( 
     <>
         <form className="col-12 col-md-6 my-3" >
@@ -54,6 +27,7 @@ const FormDB = ({setDatabase,setHost,setUser,setPassword}) => {
             onBlur={(e)=>{ setUser(e.target.value)}}
            
           />
+          <div>
           <input
             type="text"
             name="database"
@@ -62,9 +36,13 @@ const FormDB = ({setDatabase,setHost,setUser,setPassword}) => {
             onBlur={(e)=>{setDatabase(e.target.value) }}
            
           />
-          {/* <input type="submit" value="Generate conection" className="btn btn-primary" /> */}
-          
-          {/* <small className="d-block my-3">{reponse}</small> */}
+
+           <select className="form-select" onChange={(e)=>{
+             setSgbd(e.target.value)}} >
+             <option value={0}>Mysql</option>
+             <option value={1}>Postgres</option>
+           </select>
+          </div>
         </form>
     
     

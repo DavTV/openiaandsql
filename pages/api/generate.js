@@ -1,7 +1,7 @@
 import { Configuration, OpenAIApi } from "openai";
 const express = require('express');
 const mysql = require('mysql');
-const bodyParser= require('body-parser');
+const bodyParser = require('body-parser');
 const server = express();
 server.use(bodyParser.json());
 
@@ -9,7 +9,6 @@ server.use(bodyParser.json());
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
-  // apiKey: "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",
 });
 const openai = new OpenAIApi(configuration);
 
@@ -19,59 +18,100 @@ export default async function (req, res) {
       error: {
         message: "OpenAI API key not configured, please follow instructions in README.md",
       },
-      result: completion.data.choices[0].text, query, message: "Conexión con api fallada por apiKey." , exito: false
+      result: completion.data.choices[0].text, query, message: "Conexión con api fallada por apiKey.", exito: false
     });
     return;
   }
   const host = req.body.host,
-  user  = req.body.user,
-  password = req.body.password,
-  database = req.body.database;
+    user = req.body.user,
+    password = req.body.password,
+    database = req.body.database;
 
-const connection = mysql.createConnection({
-    host:host,
-    user: user,
-    password:password,
-    database: database      
-  })
+  // const connection = mysql.createConnection({
+  //   host: host,
+  //   user: user,
+  //   password: password,
+  //   database: database
+  // })
   const query = req.body.query;
-  console.log(req.body)
+  const sgbd = req.body.sgbd;
+  console.log(sgbd)
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: generatePrompt(query),
       temperature: 0.6,
       max_tokens: 200,
-      // maxDuration: 60
     });
-   
-    connection.connect(function(error){
-      try{
-        if(error){ 
-  
-         
-          res.status(200).json({ result: completion.data.choices[0].text, query, message: "Conexión fallada." , exito: false}) 
-          
-        }else{  
+ switch (sgbd) {
+   case 0:
+    const connection = mysql.createConnection({
+      host: host,
+      user: user,
+      password: password,
+      database: database
+    })
+    connection.connect(function (error) {
+      try {
+        if (error) {
+
+
+          res.status(200).json({ result: completion.data.choices[0].text, query, message: "Conection Error.", exito: false, details: [{ message: "Review your database parameters." }] })
+
+        } else {
           // const sql =`SHOW FULL TABLES FROM ${database}`;
           const sql = completion.data.choices[0].text;
-          connection.query(sql,(error,details)=>{
-            res.status(200).json({ result: completion.data.choices[0].text, query, message: "Conexión exitosa" , exito: true, details}) 
-          
-         })
-     
-      } 
+          connection.query(sql, (error, details) => {
 
-      }catch(x){ 
-        console.log("Contacto.agregarUsuario.connect --Error-- " + x); 
-      } 
+            res.status(200).json({ result: completion.data.choices[0].text, query, message: "Conection Successfull", exito: true, details: details || [{ message: "No data found, try another query." }] })
+
+
+
+          })
+        }
+
+      } catch (x) {
+        console.log("Contacto.agregarUsuario.connect --Error-- " + x);
+      }
 
     })
-   
-    
-  } catch (error) {
-    console.log(error)
-   
+     break;
+   case 1:
+     console.log("posgrets")
+     break;
+   default:
+     break;
+ }
+    // connection.connect(function (error) {
+    //   try {
+    //     if (error) {
+
+
+    //       res.status(200).json({ result: completion.data.choices[0].text, query, message: "Conection Error.", exito: false, details: [{ message: "Review your database parameters." }] })
+
+    //     } else {
+    //       // const sql =`SHOW FULL TABLES FROM ${database}`;
+    //       const sql = completion.data.choices[0].text;
+    //       connection.query(sql, (error, details) => {
+
+    //         res.status(200).json({ result: completion.data.choices[0].text, query, message: "Conection Successfull", exito: true, details: details || [{ message: "No data found, try another query." }] })
+
+
+
+    //       })
+    //     }
+
+    //   } catch (x) {
+    //     console.log("Contacto.agregarUsuario.connect --Error-- " + x);
+    //   }
+
+    // })
+
+
+  } catch (err) {
+
+    res.status(200).json({ message: "Error in the connection to the database or the call to the api." })
+
   }
 }
 
