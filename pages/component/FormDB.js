@@ -37,11 +37,11 @@ const FormDB = ({setDatabase,setHost,setUser,setPassword,setSgbd}) => {
            
           />
 
-           <select className="form-select" onChange={(e)=>{
+           {/* <select className="form-select" onChange={(e)=>{
              setSgbd(e.target.value)}} >
              <option value={0}>Mysql</option>
              <option value={1}>Postgres</option>
-           </select>
+           </select> */}
           </div>
         </form>
     

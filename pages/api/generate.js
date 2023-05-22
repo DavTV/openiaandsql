@@ -43,14 +43,50 @@ export default async function (req, res) {
       temperature: 0.6,
       max_tokens: 200,
     });
- switch (sgbd) {
-   case 0:
-    const connection = mysql.createConnection({
-      host: host,
-      user: user,
-      password: password,
-      database: database
-    })
+//  switch (sgbd) {
+//    case 0:
+//     const connection = mysql.createConnection({
+//       host: host,
+//       user: user,
+//       password: password,
+//       database: database
+//     })
+//     connection.connect(function (error) {
+//       try {
+//         if (error) {
+
+
+//           res.status(200).json({ result: completion.data.choices[0].text, query, message: "Conection Error.", exito: false, details: [{ message: "Review your database parameters." }] })
+
+//         } else {
+//           // const sql =`SHOW FULL TABLES FROM ${database}`;
+//           const sql = completion.data.choices[0].text;
+//           connection.query(sql, (error, details) => {
+//             console.log(details);
+//             let resp;
+//             if (details.affectedRows){
+//               details=[{message:"Query successfull."}];
+//             }
+
+//             res.status(200).json({ result: completion.data.choices[0].text, query, message: "Conection Successfull", exito: true, details: details || [{ message: "No data found, try another query." }] })
+
+
+
+//           })
+//         }
+
+//       } catch (x) {
+//         console.log("Contacto.agregarUsuario.connect --Error-- " + x);
+//       }
+
+//     })
+//      break;
+//    case 1:
+//      console.log("posgrets")
+//      break;
+//    default:
+//      break;
+//  }
     connection.connect(function (error) {
       try {
         if (error) {
@@ -75,37 +111,6 @@ export default async function (req, res) {
       }
 
     })
-     break;
-   case 1:
-     console.log("posgrets")
-     break;
-   default:
-     break;
- }
-    // connection.connect(function (error) {
-    //   try {
-    //     if (error) {
-
-
-    //       res.status(200).json({ result: completion.data.choices[0].text, query, message: "Conection Error.", exito: false, details: [{ message: "Review your database parameters." }] })
-
-    //     } else {
-    //       // const sql =`SHOW FULL TABLES FROM ${database}`;
-    //       const sql = completion.data.choices[0].text;
-    //       connection.query(sql, (error, details) => {
-
-    //         res.status(200).json({ result: completion.data.choices[0].text, query, message: "Conection Successfull", exito: true, details: details || [{ message: "No data found, try another query." }] })
-
-
-
-    //       })
-    //     }
-
-    //   } catch (x) {
-    //     console.log("Contacto.agregarUsuario.connect --Error-- " + x);
-    //   }
-
-    // })
 
 
   } catch (err) {
