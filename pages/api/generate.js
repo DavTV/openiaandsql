@@ -121,14 +121,8 @@ function generatePrompt(query) {
   return `Suggest three names for an query that is a superhero.
 
 Query: agregar
-Response: 
-    const sql ='INSERT  INTO cursos SET ?';
-    const cursoObjeto={
-        name: req.body.name,
-        slug : req.body.slug,
-        description: req.body.description,
-        categoria: req.body.categoria,
-    };
+Response: INSERT INTO Alumnos (IdAlumno, Nombres, Apellidos, Edad, Direccion_Residencia) VALUES 
+('0101', 'Franklin1', 'Garcia', '25', 'avenida 01');  
 
 Query: eliminar
 Response: DELETE FROM cursos WHERE id =1; 
