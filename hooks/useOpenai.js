@@ -1,5 +1,5 @@
 import { useState } from "react";
-export const useFormIA=(setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading,sgbd)=>{
+export const useFormIA=(setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading)=>{
     const [queryInput, setqueryInput] = useState("");
     const [message, setMessage] = useState('');
 
@@ -18,7 +18,7 @@ export const useFormIA=(setResult, setQueryResponse,user,password,host,database,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ query: queryInput, user, database,host,password,sgbd }),
+        body: JSON.stringify({ query: queryInput, user, database,host,password }),
       });
 
       const data = await response.json();
@@ -30,7 +30,7 @@ export const useFormIA=(setResult, setQueryResponse,user,password,host,database,
       setResult(data.result);
       setQueryResponse(data.query)
       setMessage(data.message)
-      console.log(data.details)
+      console.log(data.details, "desde useopenai")
       setDataQuery(data.details)
       setqueryInput("");
       setLoading(false);

@@ -14,7 +14,7 @@ export default function Home() {
   const [password, setPassword] = useState('');
   const [database, setDatabase] = useState('');
   const [dataQuery, setDataQuery] = useState([]);
-  const [sgbd, setSgbd] = useState(0);
+  // const [sgbd, setSgbd] = useState(0);
   const [loading, setLoading] = useState(false);
   return (
     <div>
@@ -26,8 +26,8 @@ export default function Home() {
       <main className="container py-3">
         <h1>OpenAI and SQL</h1>
         <div className="row">
-          <FormDB setDatabase={setDatabase} setHost={setHost} setUser={setUser} setPassword={setPassword}  setSgbd={setSgbd} />
-          <FormOpenai setResult={setResult} setQueryResponse={setQueryResponse} user={user} host={host} password={password} database={database} setDataQuery={setDataQuery} setLoading={setLoading} loading={loading}  sgbd={sgbd} />
+          <FormDB setDatabase={setDatabase} setHost={setHost} setUser={setUser} setPassword={setPassword}   />
+          <FormOpenai setResult={setResult} setQueryResponse={setQueryResponse} user={user} host={host} password={password} database={database} setDataQuery={setDataQuery} setLoading={setLoading} loading={loading}   />
           {
             loading && <Loading/>
           }

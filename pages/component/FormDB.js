@@ -1,4 +1,4 @@
-const FormDB = ({setDatabase,setHost,setUser,setPassword,setSgbd}) => {
+const FormDB = ({setDatabase,setHost,setUser,setPassword}) => {
     return ( 
     <>
         <form className="col-12 col-md-6 my-3" >
