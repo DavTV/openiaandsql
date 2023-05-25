@@ -1,5 +1,5 @@
 import { useFormIA } from "../../hooks/useOpenai";
-const FormOpenai = ({setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading,loading}) => {
+const FormOpenai = ({setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading,loading,setHidden,hidden}) => {
       const {onSubmit,queryInput,setqueryInput,message} = useFormIA(setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading);
   return (
     <div className="col-12 col-md-6 my-3">       
@@ -18,7 +18,7 @@ const FormOpenai = ({setResult, setQueryResponse,user,password,host,database,set
               {message}
           </small>
           </form>
-
+          <button  className="btn btn-primary" onClick={()=>{setHidden(!hidden)}} >Frecuent querys</button>
           </div>
    
   );

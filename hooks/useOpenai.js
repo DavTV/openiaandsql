@@ -1,5 +1,5 @@
 import { useState } from "react";
-export const useFormIA=(setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading)=>{
+export const useFormIA=(setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading,inputFrecuent)=>{
     const [queryInput, setqueryInput] = useState("");
     const [message, setMessage] = useState('');
 
@@ -10,7 +10,7 @@ export const useFormIA=(setResult, setQueryResponse,user,password,host,database,
       setMessage("Ingrese el query primero.")
       return ;
     }
-
+ console.log(queryInput,user,database,inputFrecuent)
     try {
       setLoading(true);
       const response = await fetch("/api/generate", {
@@ -18,7 +18,7 @@ export const useFormIA=(setResult, setQueryResponse,user,password,host,database,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ query: queryInput, user, database,host,password }),
+        body: JSON.stringify({ query: queryInput, user, database,host,password, inputFrecuent }),
       });
 
       const data = await response.json();

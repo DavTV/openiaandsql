@@ -34,8 +34,9 @@ export default async function (req, res) {
     database: database
   })
   const query = req.body.query;
+  const inputFrecuent = req.body.inputFrecuent;
   // const sgbd = req.body.sgbd;
-  // console.log(sgbd)
+  // console.log(req.body)
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
@@ -44,26 +45,39 @@ export default async function (req, res) {
       max_tokens: 200,
     });
     console.log (completion.data.choices[0].text);
-
-connection.connect(function (error) {
-  try {
-    if (error) {
+    
+    connection.connect(function (error) {
+      try {
+        if (error) {
           // console.log(sql)
 
-
-          res.status(200).json({ result: completion.data.choices[0].text, query, message: "Conection Error.", exito: false, details: [{ message: "Review your database parameters." }] })
+          
+          res.status(200).json({ result: inputFrecuent || completion.data.choices[0].text, query, message: "Conection Error.", exito: false, details: [{ message: "Review your database parameters." }] })
 
         } else {
           // const sql =`SHOW FULL TABLES FROM ${database}`;
           const sql = completion.data.choices[0].text;
+          const sqlQuery = `Insert INTO querys (input,query) values ("${ inputFrecuent || query}","${completion.data.choices[0].text}")`
           connection.query(sql, (error, details) => {
-            console.log(details)
-                  if(details.affectedRows){
-                details =[{message:"Query successfull."}]
-            }
-            res.status(200).json({ result: completion.data.choices[0].text, query, message: "Conection Successfull", exito: true, details: details || [{ message: "No data found, try another query." }]})
-
-
+            // if(details.affectedRows){
+              //     details =[{message:"Query successfull."}]
+            // }
+             details = details || [{ message: "No data found, try another query." }]
+                      
+              details = details.affectedRows ? [{message: "Query successfull."}] : details 
+              
+              console.log(details, "details")
+              if(details.length>1){
+                  connection.query(sqlQuery, (error, details) => {
+                  if(error){
+                      console.log(error)
+                    }else{
+                      console.log("entro")
+                      console.log(details,"segunda consulta")
+                    }
+                  })
+              }
+              res.status(200).json({ result:completion.data.choices[0].text,query :inputFrecuent ||  query, message: "Conection Successfull", exito: true, details})
 
           })
         }

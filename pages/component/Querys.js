@@ -1,0 +1,69 @@
+import Styles from './Querys.module.css';
+import {useEffect, useState} from 'react';
+import { useFormIA } from "../../hooks/useOpenai";
+
+const Querys = ({setHidden,hidden,querys, setQuerys, host, database,user,password, setQueryResponse,dataQuery,setDataQuery,setLoading,setResult}) => {
+   const [inputFrecuent, setInputFrecuent] = useState("");
+   const RenderQuerys= async ()=>{
+      const response = await fetch("/api/querys", {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/json",
+         },
+         body: JSON.stringify({ user, database,host,password }),
+       });
+ 
+       const data = await response.json();
+   
+       if (response.status !== 200) {
+         throw data.error || new Error(`Request failed with status ${response.status}`);
+
+       }
+       setQuerys(data)
+   }
+  
+   
+   const {onSubmit,queryInput,setqueryInput,message} = useFormIA(setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading,inputFrecuent);
+    useEffect(() => {
+       RenderQuerys()
+    }, [],dataQuery);
+
+    const HandleClick=(query,input)=>{
+       console.log(input)
+       setInputFrecuent(input)
+       setqueryInput(query)
+    }
+    return ( 
+    
+        <div className={Styles.container_modal} >
+
+            <div class="modal-dialog bg-white p-3">
+               <div class="modal-content p-2">
+                  <div class="modal-header">
+                  <h5 class="modal-title my-3">Frecuent Querys</h5>
+                  <button type="button" class="btn-close ms-4" data-bs-dismiss="modal" aria-label="Close" onClick={()=>{setHidden(!hidden)}}></button>
+                  </div>
+                  <div class="modal-body my-3">
+                     {
+                        querys.length > 0 ? querys.map((query)=>{
+                         return <form onSubmit={onSubmit}>
+                                    <button onClick={()=>{HandleClick(query.query,query.input)}} className='btn btn-outline-primary'>{query.input } ({query.num_repeticiones}) </button>
+                                 </form>
+                        }): "Aún no hay querys disponibles"
+                     }
+                  </div>
+                  {/* <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                  </div> */}
+               </div>
+            </div>
+     
+
+        </div>
+
+        
+     );
+}
+ 
+export default Querys;
