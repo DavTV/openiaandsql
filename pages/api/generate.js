@@ -57,7 +57,10 @@ connection.connect(function (error) {
           // const sql =`SHOW FULL TABLES FROM ${database}`;
           const sql = completion.data.choices[0].text;
           connection.query(sql, (error, details) => {
-            
+            console.log(details)
+                  if(details.affectedRows){
+                details =[{message:"Query successfull."}]
+            }
             res.status(200).json({ result: completion.data.choices[0].text, query, message: "Conection Successfull", exito: true, details: details || [{ message: "No data found, try another query." }]})
 
 
@@ -86,7 +89,7 @@ function generatePrompt(query) {
 
 Query: agregar
 Response: INSERT INTO Alumnos (IdAlumno, Nombres, Apellidos, Edad, Direccion_Residencia) VALUES 
-('0101', 'Franklin1', 'Garcia', '25', 'avenida 01');  
+('0101', 'Franklin1', 'Garcia', 25, 'avenida 01');  
 
 Query: eliminar
 Response: DELETE FROM cursos WHERE id =1; 
