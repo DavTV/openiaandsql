@@ -25,7 +25,7 @@ export default function handler(req, res){
                  res.status(200).json({message: "Error de conexión", exito:false})
              }else{  
                  console.log("Conexión exitosa"); 
-                 const sql =`SELECT input, query, COUNT(*) AS num_repeticiones FROM querys GROUP BY input HAVING num_repeticiones >= 5 ORDER BY COUNT(*) DESC LIMIT 20`;
+                 const sql =`SELECT query,input, TRIM(query) AS query_sin_espacios, COUNT(*) AS num_repeticiones FROM querys GROUP BY REPLACE(query, ';', '') AND TRIM(query) ORDER BY num_repeticiones DESC LIMIT 20;`;
                  connection.query(sql,(error,results)=>{
                     console.log(results)
                      res.status(200).json(results)
