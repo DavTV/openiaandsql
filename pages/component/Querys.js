@@ -49,7 +49,7 @@ const Querys = ({setHidden,hidden,querys, setQuerys, host, database,user,passwor
                          return <form onSubmit={onSubmit}>
                                     <button onClick={()=>{HandleClick(query.query,query.input)}} className='btn btn-outline-primary'>{query.input } ({query.num_repeticiones}) </button>
                                  </form>
-                        }): "Aún no hay querys disponibles"
+                        }): "no frequent queries yet"
                      }
                   </div>
                   {/* <div class="modal-footer">
