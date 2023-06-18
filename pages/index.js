@@ -17,7 +17,8 @@ export default function Home() {
   const [password, setPassword] = useState('');
   const [database, setDatabase] = useState('');
   const [dataQuery, setDataQuery] = useState([]);
-  // const [sgbd, setSgbd] = useState(0);
+  // const [sgbd, setSgbd] = useState('');
+  const [typeDb, setTypeDb] = useState(0);
   const [hidden, setHidden] = useState(false);
   const [loading, setLoading] = useState(false);
   const [querys, setQuerys] = useState([]);
@@ -32,14 +33,15 @@ export default function Home() {
       <main className="container py-3">
         <h1>OpenAI and SQL</h1>
         <div className="row">
-          <FormDB setDatabase={setDatabase} setHost={setHost} setUser={setUser} setPassword={setPassword}   />
-          <FormOpenai setResult={setResult} setQueryResponse={setQueryResponse} user={user} host={host} password={password} database={database} setDataQuery={setDataQuery} setLoading={setLoading} loading={loading} setHidden={setHidden} hidden={hidden}  />
+          <FormDB setDatabase={setDatabase} setHost={setHost} setUser={setUser} setPassword={setPassword} setTypeDb={setTypeDb}  />
+        {/* {sgbd} */}
+          <FormOpenai setResult={setResult} setQueryResponse={setQueryResponse} user={user} host={host} password={password} database={database} setDataQuery={setDataQuery} setLoading={setLoading} loading={loading} setHidden={setHidden} hidden={hidden} typeDb={typeDb} />
           {
             loading && <Loading/>
           }
           {
             hidden &&
-            <Querys  hidden={hidden} setHidden={setHidden} setQuerys={setQuerys} querys={querys} user={user} host={host} password={password} database={database} dataQuery={dataQuery} setDataQuery={setDataQuery} setLoading={setLoading} setResult={setResult} setQueryResponse={setQueryResponse}  />
+            <Querys  hidden={hidden} setHidden={setHidden} setQuerys={setQuerys} querys={querys} user={user} host={host} password={password} database={database} dataQuery={dataQuery} setDataQuery={setDataQuery} setLoading={setLoading} setResult={setResult} setQueryResponse={setQueryResponse} typeDb={typeDb}  />
           }
 
          <View result={result} queryResponse={queryResponse} dataQuery={dataQuery} />

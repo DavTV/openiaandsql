@@ -1,4 +1,4 @@
-const FormDB = ({setDatabase,setHost,setUser,setPassword}) => {
+const FormDB = ({setDatabase,setHost,setUser,setPassword,setTypeDb}) => {
     return ( 
     <>
         <form className="col-12 col-md-6 my-3" >
@@ -37,11 +37,11 @@ const FormDB = ({setDatabase,setHost,setUser,setPassword}) => {
            
           />
 
-           {/* <select className="form-select" onChange={(e)=>{
-             setSgbd(e.target.value)}} >
+           <select className="form-select" onChange={(e)=>{
+             setTypeDb(parseInt(e.target.value))}} >
              <option value={0}>Mysql</option>
              <option value={1}>Postgres</option>
-           </select> */}
+           </select>
           </div>
         </form>
     

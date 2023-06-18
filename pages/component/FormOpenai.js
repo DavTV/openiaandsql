@@ -1,6 +1,10 @@
 import { useFormIA } from "../../hooks/useOpenai";
-const FormOpenai = ({setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading,loading,setHidden,hidden}) => {
-      const {onSubmit,queryInput,setqueryInput,message} = useFormIA(setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading);
+const FormOpenai = ({setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading,loading,setHidden,hidden,typeDb}) => {
+  console.log(typeDb,"desde formOpenai -----------")
+  // const inputFrecuent = "";
+  const {onSubmit,queryInput,setqueryInput,message} = useFormIA(setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading,typeDb);
+  
+
   return (
     <div className="col-12 col-md-6 my-3">       
           <form  onSubmit={onSubmit}>

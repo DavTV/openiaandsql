@@ -2,7 +2,7 @@ import Styles from './Querys.module.css';
 import {useEffect, useState} from 'react';
 import { useFormIA } from "../../hooks/useOpenai";
 
-const Querys = ({setHidden,hidden,querys, setQuerys, host, database,user,password, setQueryResponse,dataQuery,setDataQuery,setLoading,setResult}) => {
+const Querys = ({setHidden,hidden,querys, setQuerys, host, database,user,password, setQueryResponse,dataQuery,setDataQuery,setLoading,setResult,typeDb}) => {
    const [inputFrecuent, setInputFrecuent] = useState("");
    const RenderQuerys= async ()=>{
       const response = await fetch("/api/querys", {
@@ -10,7 +10,7 @@ const Querys = ({setHidden,hidden,querys, setQuerys, host, database,user,passwor
          headers: {
            "Content-Type": "application/json",
          },
-         body: JSON.stringify({ user, database,host,password }),
+         body: JSON.stringify({ user,database,host,password}),
        });
  
        const data = await response.json();
@@ -23,7 +23,7 @@ const Querys = ({setHidden,hidden,querys, setQuerys, host, database,user,passwor
    }
   
    
-   const {onSubmit,queryInput,setqueryInput,message} = useFormIA(setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading,inputFrecuent);
+   const {onSubmit,queryInput,setqueryInput,message} = useFormIA(setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading,inputFrecuent,typeDb);
     useEffect(() => {
        RenderQuerys()
     }, [],dataQuery);

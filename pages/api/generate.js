@@ -33,10 +33,10 @@ export default async function (req, res) {
     password: password,
     database: database
   })
+  console.log(req.body)
   const query = req.body.query;
   const inputFrecuent = req.body.inputFrecuent;
-  // const sgbd = req.body.sgbd;
-  // console.log(req.body)
+  const typeDb = req.body.typeDb;
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
@@ -44,57 +44,69 @@ export default async function (req, res) {
       temperature: 0.6,
       max_tokens: 200,
     });
-    console.log (completion.data.choices[0].text);
-    
-    connection.connect(function (error) {
-      try {
-        if (error) {
-          // console.log(sql)
+    console.log(typeDb,typeDb)
+    switch (typeDb) {
+      case 0:
 
-          
-          res.status(200).json({ result: inputFrecuent || completion.data.choices[0].text, query, message: "Conection Error.", exito: false, details: [{ message: "Review your database parameters." }] })
+        connection.connect(function (error) {
+          try {
+            if (error) {
+              // console.log(sql)
 
-        } else {
-          // const sql =`SHOW FULL TABLES FROM ${database}`;
-          const sql = completion.data.choices[0].text;
-          const sqlQuery = `Insert INTO querys (input,query) values ("${ inputFrecuent || query}","${completion.data.choices[0].text}")`
-          connection.query(sql, (error, details) => {
-            // if(details.affectedRows){
-              //     details =[{message:"Query successfull."}]
-            // }
-             details = details || [{ message: "No data found, try another query." }]
-                      
-              details = details.affectedRows ? [{message: "Query successfull."}] : details 
-              
-              console.log(details, "details")
-              if(details.length>1){
+
+              res.status(200).json({ result: inputFrecuent || completion.data.choices[0].text, query, message: "Conection Error.", exito: false, details: [{ message: "Review your database parameters." }] })
+
+            } else {
+              // const sql =`SHOW FULL TABLES FROM ${database}`;
+              const sql = completion.data.choices[0].text;
+              const sqlQuery = `Insert INTO querys (input,query) values ("${inputFrecuent != "" ? inputFrecuent : query}","${completion.data.choices[0].text}")`
+              connection.query(sql, (error, details) => {
+                // if(details.affectedRows){
+                //     details =[{message:"Query successfull."}]
+                // }
+                details = details || [{ message: "No data found, try another query." }]
+
+                details = details.affectedRows ? [{ message: "Query successfull." }] : details
+
+                console.log(details, "details")
+                if (details.length > 1) {
                   connection.query(sqlQuery, (error, details) => {
-                  if(error){
+                    if (error) {
                       console.log(error)
-                    }else{
+                    } else {
                       console.log("entro")
-                      console.log(details,"segunda consulta")
+                      console.log(details, "segunda consulta")
                     }
                   })
-              }
-              res.status(200).json({ result:completion.data.choices[0].text,query :inputFrecuent ||  query, message: "Conection Successfull", exito: true, details})
+                }
+                res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message: "Conection Successfull", exito: true, details })
 
-          })
-        }
+              })
+            }
 
-      } catch (x) {
-        console.log("Contacto.agregarUsuario.connect --Error-- " + x);
-      }
+          } catch (x) {
+            console.log("Contacto.agregarUsuario.connect --Error-- " + x);
+          }
 
-    })
+        })
 
-
+        break;
+      case 1:
+        // console.log("Postgres");
+        res.status(200).json({ result: inputFrecuent || completion.data.choices[0].text, query, message: "Conection Error.", exito: false, details: [{ message: "Deployment with postgres is in progress." }] })
+        break;
+      default:
+        console.log("ningún gestor fue selecionado")
+        break;
+    }
   } catch (err) {
 
     res.status(200).json({ message: "Error in the connection to the database or the call to the api." })
 
   }
 }
+    // console.log (completion.data.choices[0].text);
+
 
 function generatePrompt(query) {
   const capitalizedquery =

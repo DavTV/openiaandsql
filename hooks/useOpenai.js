@@ -1,8 +1,8 @@
 import { useState } from "react";
-export const useFormIA=(setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading,inputFrecuent)=>{
+export const useFormIA=(setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading,typeDb,inputFrecuent="")=>{
+  console.log(typeDb, "desde use Openi-",user)
     const [queryInput, setqueryInput] = useState("");
     const [message, setMessage] = useState('');
-
   async function onSubmit(event) {
     event.preventDefault();
     if(queryInput==""){
@@ -10,7 +10,7 @@ export const useFormIA=(setResult, setQueryResponse,user,password,host,database,
       setMessage("Ingrese el query primero.")
       return ;
     }
- console.log(queryInput,user,database,inputFrecuent)
+ console.log(queryInput,user,database,typeDb)
     try {
       setLoading(true);
       const response = await fetch("/api/generate", {
@@ -18,7 +18,8 @@ export const useFormIA=(setResult, setQueryResponse,user,password,host,database,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ query: queryInput, user, database,host,password, inputFrecuent }),
+        // inputFrecuent va al final porque puese ser indefinido
+        body: JSON.stringify({ query: queryInput, user, database,host,password,typeDb,inputFrecuent}),
       });
 
       const data = await response.json();
