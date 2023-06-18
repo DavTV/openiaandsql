@@ -23,7 +23,7 @@ const Querys = ({setHidden,hidden,querys, setQuerys, host, database,user,passwor
    }
   
    
-   const {onSubmit,queryInput,setqueryInput,message} = useFormIA(setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading,inputFrecuent,typeDb);
+   const {onSubmit,queryInput,setqueryInput,message} = useFormIA(setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading,typeDb,inputFrecuent);
     useEffect(() => {
        RenderQuerys()
     }, [],dataQuery);
