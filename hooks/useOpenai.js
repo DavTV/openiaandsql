@@ -29,13 +29,22 @@ export const useFormIA=(setResult, setQueryResponse,user,password,host,database,
       }
 
       setResult(data.result);
-      setQueryResponse(data.query)
+      setQueryResponse(queryInput)
       setMessage(data.message)
       console.log(data.details, "desde useopenai")
       setDataQuery(data.details)
       setqueryInput("");
       setLoading(false);
     } catch(error) {
+      setLoading(true);
+      setResult([]);
+      setQueryResponse("")
+      setMessage("Api key error conection.")
+      console.log(data.details, "desde useopenai")
+      setDataQuery([])
+      setqueryInput("");
+      setLoading(false);
+
       console.error(error);
 
     }
