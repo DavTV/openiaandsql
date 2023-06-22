@@ -10,40 +10,86 @@ export default function handler(req, res){
         user  = req.body.user,
         password = req.body.password,
         database = req.body.database;
-    
-    console.log(req.body)
-      const connection = mysql.createConnection({
-          host:host,
-          user: user,
-          password:password,
-          database: database      
-        })
-        connection.connect(function(error){                                                                                                 
-          try{ 
-             if(error){ 
-
-                 console.log("Error al establecer la conexión a la BD -- " + error); 
-                 res.status(200).json({message: "Error de conexión", exito:false})
-             }else{  
-                 console.log("Conexión exitosa querys"); 
-                 const sql =`SELECT query, input, TRIM(REPLACE(query, ';', '')) AS query_sin_espacios, COUNT(*) AS num_repeticiones
-                 FROM querys
-                 GROUP BY TRIM(REPLACE(query, ';', ''))
-                 HAVING COUNT(*) >= 4
-                 ORDER BY num_repeticiones DESC
-                 LIMIT 10;`;
-                 connection.query(sql,(error,results)=>{
-                    console.log(results)
-                     res.status(200).json(results)
-                })
+        const typeDb = req.body.typeDb;
+        const sql = `SELECT query, input, TRIM(REPLACE(query, ';', '')) AS query_sin_espacios, COUNT(*) AS num_repeticiones
+        FROM querys
+        GROUP BY TRIM(REPLACE(query, ';', ''))
+        HAVING COUNT(*) >= 4
+        ORDER BY num_repeticiones DESC
+        LIMIT 10;`;
+    switch (typeDb) {
+        case 0:
+            const connection = mysql.createConnection({
+                host:host,
+                user: user,
+                password:password,
+                database: database      
+              })
+              connection.connect(function(error){                                                                                                 
+                try{ 
+                   if(error){ 
+        
+                       console.log("Error al establecer la conexión a la BD -- " + error); 
+                       res.status(200).json({message: "Error de conexión", exito:false})
+                   }else{  
+                       console.log("Conexión exitosa querys"); 
+                       
+                       connection.query(sql,(error,results)=>{
+                          console.log(results)
+                           res.status(200).json(results)
+                      })
+                          
+                      // cunsulta aquí
+                   } 
+               }
+               catch(x){ 
+                   console.log("Contacto.agregarUsuario.connect --Error-- " + x); 
+               } 
+        });
+            
+            break;
+        case 1:
+            const  pool = new Pool({
+                user: user,
+                password:password,
+                host: host,
+                database:database,
+              })
+      
+            console.log("abajo")
+            const pgp = require('pg-promise')({
+             noWarnings: true
+             })  
+             const db = pgp(`postgres://${user}:${password}@${host}:5432/${database}`);
+             const postGres= async()=>{
+              
+                try {
+                    const result = await db.many(sql);
+              
+                  
+                    //   res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message: "Conection successfull", exito: true, details: result})  
+                      console.log("Conexión exitosa querys"); 
+                      console.log(result)
+                      res.status(200).json(result)
+                  } catch (error) {
                     
-                // cunsulta aquí
-             } 
-         }
-         catch(x){ 
-             console.log("Contacto.agregarUsuario.connect --Error-- " + x); 
-         } 
-});
+                    console.log("Error al establecer la conexión a la BD -- " + error); 
+                    res.status(200).json({message: "Error de conexión", exito:false})
+                    
+                  }
+  
+  
+  
+                
+               //  console.log(result)
+              }
+              postGres()
+            
+            break;
+        default:
+            break;
+    }
+    // console.log(req.body)
 
         
 };

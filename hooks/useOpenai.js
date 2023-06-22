@@ -25,27 +25,19 @@ export const useFormIA=(setResult, setQueryResponse,user,password,host,database,
       const data = await response.json();
   
       if (response.status !== 200) {
+        console.log("error")
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
       setResult(data.result);
       setQueryResponse(queryInput)
       setMessage(data.message)
-      console.log(data.details, "desde useopenai")
+      console.log(data.details, "desde useopenai")+
       setDataQuery(data.details)
       setqueryInput("");
       setLoading(false);
     } catch(error) {
-      setLoading(true);
-      setResult([]);
-      setQueryResponse("")
-      setMessage("Api key error conection.")
-      console.log(data.details, "desde useopenai")
-      setDataQuery([])
-      setqueryInput("");
-      setLoading(false);
-
-      console.error(error);
+            console.error(error, "el error");
 
     }
   }
