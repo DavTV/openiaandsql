@@ -43,7 +43,7 @@ export default function handler(req, res){
                    } 
                }
                catch(x){ 
-                   console.log("Contacto.agregarUsuario.connect --Error-- " + x); 
+                   console.log("Eror de conexion de usuario --Error-- " + x); 
                } 
         });
             
