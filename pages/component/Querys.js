@@ -10,7 +10,7 @@ const Querys = ({setHidden,hidden,querys, setQuerys, host, database,user,passwor
          headers: {
            "Content-Type": "application/json",
          },
-         body: JSON.stringify({ user,database,host,password}),
+         body: JSON.stringify({ user,database,host,password,typeDb}),
        });
  
        const data = await response.json();
@@ -22,7 +22,7 @@ const Querys = ({setHidden,hidden,querys, setQuerys, host, database,user,passwor
        setQuerys(data)
    }
   
-   
+   console.log(typeDb,host, "desde querys")
    const {onSubmit,queryInput,setqueryInput,message} = useFormIA(setResult, setQueryResponse,user,password,host,database,setDataQuery,setLoading,typeDb,inputFrecuent);
     useEffect(() => {
        RenderQuerys()

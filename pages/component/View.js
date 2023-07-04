@@ -6,7 +6,10 @@ const View = ({ result, queryResponse, dataQuery }) => {
     let ths = [];
     const item = dataQuery[0];
     for (const key in item) {
-      ths.push(key);
+       
+
+         ths.push(key);
+       
     }
     setTheads(ths)
   }
@@ -39,7 +42,7 @@ const View = ({ result, queryResponse, dataQuery }) => {
                 dataQuery.length > 0 && dataQuery.map((item, index) => {
                   return <tr key={index + "tr"}>{
                     Object.values(item).map((i, index) => {
-                      return <td key={index + i}>{i}</td>
+                      return  typeof(i)!= "object" && <td key={index + i}>{i}</td>
                     })
                   }</tr>
                 })

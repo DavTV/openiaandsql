@@ -106,15 +106,22 @@ export default async function (req, res) {
               try {
                   const result = await db.many(completion.data.choices[0].text);
             
-                
+                  console.log(result)
                     res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message: "Conection successfull", exito: true, details: result})  
-                 
+                    // const sql = completion.data.choices[0].text;
+                    // const sqlQuery = `Insert INTO querys (input,query) values ("${inputFrecuent != "" ? inputFrecuent : query}","${completion.data.choices[0].text}")`
+                    console.log(query)
+                    if(result){
+
+                      const result2 = await db.one( `Insert INTO querys (input,query) values ('${inputFrecuent != "" ? inputFrecuent : query}','${completion.data.choices[0].text}')`)
+                    }
+                  //  console.log(result2)
                  
                 } catch (error) {
                   console.log(error)
                     let message = error.message;
                     if(message){
-                      res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message:"Conection Successfull.", details :[{ message}]})  
+                      res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message, details :[{ message}]})  
                     }else{
                       res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message:"Check your parameters  your DB.", details :[{ message: "No data found, try another query." }]})
 

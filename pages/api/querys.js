@@ -4,19 +4,15 @@ const mysql = require('mysql');
 const bodyParser= require('body-parser');
 const server = express();
 server.use(bodyParser.json());
-
 export default function handler(req, res){
+    console.log(req.body)
         const host = req.body.host,
         user  = req.body.user,
         password = req.body.password,
         database = req.body.database;
         const typeDb = req.body.typeDb;
-        const sql = `SELECT query, input, TRIM(REPLACE(query, ';', '')) AS query_sin_espacios, COUNT(*) AS num_repeticiones
-        FROM querys
-        GROUP BY TRIM(REPLACE(query, ';', ''))
-        HAVING COUNT(*) >= 4
-        ORDER BY num_repeticiones DESC
-        LIMIT 10;`;
+
+        console.log(typeDb)
     switch (typeDb) {
         case 0:
             const connection = mysql.createConnection({
@@ -34,7 +30,11 @@ export default function handler(req, res){
                    }else{  
                        console.log("Conexión exitosa querys"); 
                        
-                       connection.query(sql,(error,results)=>{
+                       connection.query(`SELECT TRIM(BOTH ' ;' FROM query) AS query_sin_espacios, COUNT(*) AS num_repeticiones
+                       FROM querys
+                       GROUP BY query_sin_espacios
+                       HAVING COUNT(*) >= 3
+                       ORDER BY num_repeticiones DESC;`,(error,results)=>{
                           console.log(results)
                            res.status(200).json(results)
                       })
@@ -64,9 +64,17 @@ export default function handler(req, res){
              const postGres= async()=>{
               
                 try {
-                    const result = await db.many(sql);
+                    const result = await db.many(`SELECT query_sin_espacios, num_repeticiones
+                    FROM (
+                        SELECT TRIM(BOTH ' ;' FROM query) AS query_sin_espacios, COUNT(*) AS num_similares
+                        FROM querys
+                        GROUP BY query_sin_espacios
+                    ) AS subquery
+                    WHERE num_similares >= 4
+                    ORDER BY num_similares DESC;`);
               
                   
+
                     //   res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message: "Conection successfull", exito: true, details: result})  
                       console.log("Conexión exitosa querys"); 
                       console.log(result)
