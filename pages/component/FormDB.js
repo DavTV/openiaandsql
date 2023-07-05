@@ -2,11 +2,11 @@ const FormDB = ({setDatabase,setHost,setUser,setPassword,setTypeDb}) => {
     return ( 
     <>
         <form className="col-12 col-md-6 my-3" >
-          <p >You must connect to your database first</p>  
+          <p >Debes conectarte a tu base de datos primero</p>  
           <input
             type="text"
             name="host"
-            placeholder="Enter host"
+            placeholder="Ingrese host"
             className="form-control mb-2"
             onBlur={(e)=>{ setHost(e.target.value)}}
            
@@ -14,7 +14,7 @@ const FormDB = ({setDatabase,setHost,setUser,setPassword,setTypeDb}) => {
           <input
             type="text"
             name="password"
-            placeholder="Enter password"
+            placeholder="Ingrese password"
             className="form-control mb-2"
             onBlur={(e)=>{ setPassword(e.target.value)}}
            
@@ -22,7 +22,7 @@ const FormDB = ({setDatabase,setHost,setUser,setPassword,setTypeDb}) => {
           <input
             type="text"
             name="user"
-            placeholder="Enter user"
+            placeholder="Ingrese user"
             className="form-control mb-2"
             onBlur={(e)=>{ setUser(e.target.value)}}
            
@@ -31,7 +31,7 @@ const FormDB = ({setDatabase,setHost,setUser,setPassword,setTypeDb}) => {
           <input
             type="text"
             name="database"
-            placeholder="Enter database"
+            placeholder="Ingrese database"
             className="form-control mb-2"
             onBlur={(e)=>{setDatabase(e.target.value) }}
            

@@ -25,13 +25,13 @@ export default function Home() {
   return (
     <div className="position-relative">
       <Head>
-        <title>OpenAI and SQL</title>
+        <title>TALLER INTEGRADOR DE SI/TI</title>
         <link rel="icon" href="/dog.png" />
         {/* <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script> */}
       </Head>
 
       <main className="container py-3">
-        <h1>OpenAI and SQL</h1>
+        <h1>TALLER INTEGRADOR DE SI/TI</h1>
         <div className="row">
           <FormDB setDatabase={setDatabase} setHost={setHost} setUser={setUser} setPassword={setPassword} setTypeDb={setTypeDb}  />
         {/* {sgbd} */}

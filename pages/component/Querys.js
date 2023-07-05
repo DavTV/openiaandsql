@@ -40,7 +40,7 @@ const Querys = ({setHidden,hidden,querys, setQuerys, host, database,user,passwor
             <div class="modal-dialog bg-white p-3">
                <div class="modal-content p-2">
                   <div class="modal-header">
-                  <h5 class="modal-title my-3">Frecuent Querys</h5>
+                  <h5 class="modal-title my-3">Consultas frecuentes</h5>
                   <button type="button" class="btn-close ms-4" data-bs-dismiss="modal" aria-label="Close" onClick={()=>{setHidden(!hidden)}}></button>
                   </div>
                   <div class="modal-body my-3">
@@ -49,7 +49,7 @@ const Querys = ({setHidden,hidden,querys, setQuerys, host, database,user,passwor
                          return <form onSubmit={onSubmit}>
                                     <button onClick={()=>{HandleClick(query.query,query.input)}} className='btn btn-outline-primary'>{query.input } ({query.num_repeticiones}) </button>
                                  </form>
-                        }): "no frequent queries yet"
+                        }): "No existen consultas frecuentes aún."
                      }
                   </div>
                   {/* <div class="modal-footer">

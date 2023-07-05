@@ -53,7 +53,7 @@ export default async function (req, res) {
               // console.log(sql)
 
 
-              res.status(200).json({ result: inputFrecuent || completion.data.choices[0].text, query, message: "Conection Error.", exito: false, details: [{ message: "Review your database parameters." }] })
+              res.status(200).json({ result: inputFrecuent || completion.data.choices[0].text, query, message: "Error de conexión.", exito: false, details: [{ message: "Revisa los parametros de tu base de datos." }] })
 
             } else {
               // const sql =`SHOW FULL TABLES FROM ${database}`;
@@ -64,7 +64,7 @@ export default async function (req, res) {
                 //     details =[{message:"Query successfull."}]
                 // }
                 
-                details = details || [{ message: "No data found, try another query." }]
+                details = details || [{ message: "No se encontro respuesta, intenta otra vez." }]
                 details = details.affectedRows ? [{ message: "Query successfull." }] : details
 
                 console.log(details, "details")
@@ -78,7 +78,7 @@ export default async function (req, res) {
                     }
                   })
                 }
-                res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message: "Conection Successfull", exito: true, details })
+                res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message: "Conexión exitoso", exito: true, details })
 
               })
             }
@@ -123,7 +123,7 @@ export default async function (req, res) {
                     if(message){
                       res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message, details :[{ message}]})  
                     }else{
-                      res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message:"Check your parameters  your DB.", details :[{ message: "No data found, try another query." }]})
+                      res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message:"Revisa los parametros de tu base de datos.", details :[{ message: "No se encontro data, intenta otra vez." }]})
 
                     }
                   
@@ -177,8 +177,8 @@ export default async function (req, res) {
         break;
     }
   } catch (err) {
-
-    res.status(200).json({ message: "Error in the connection to the database or the call to the api." })
+    res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message:"Revisa los parametros de su base de datos.", details :[{ message: "Error con la key." }]})
+    res.status(200).json({ message: "Error en la conexión a la base de datos o apiKey." })
 
   }
 }
@@ -202,6 +202,9 @@ Response: SELECT * FROM cursos
 
 Query: actualiza
 Response: UPDATE cursos SET name ='david', slug ='dato', description ='esta es una descripción', categoria='libros' WHERE id =2
+
+Query: verifica
+Response: verifica si existe la tabla, estas tabla pueden ser nombradas en ingles o español, además considera de forma indistinta si es plural o singular;
 
 Query: ${capitalizedquery}
 Response:`;
