@@ -63,7 +63,31 @@ export default async function (req, res) {
                 // if(details.affectedRows){
                 //     details =[{message:"Query successfull."}]
                 // }
-                
+                if(details){
+                  res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message: "Conexión exitoso", exito: true, details })
+                }else{
+                  const QueryTraducido= async()=>{
+
+                    const queryTraducido = query+" traduce la tabla a inglés y si se usa alguna columna traducela también, pero no traduscas el valor que se manda en el where, muestrame solo la consulta final";
+                    const completionTraducido = await openai.createCompletion({
+                      model: "text-davinci-003",
+                      prompt: generatePrompt(queryTraducido),
+                      temperature: 0.6,
+                      max_tokens: 200,
+                    })
+                    const sqlTraducido = completionTraducido.data.choices[0].text;
+                    console.log(sqlTraducido, "sql traducido")
+                    connection.query(sqlTraducido, (error, detailsTraducido) => {
+                        // console.log()
+                        console.log( "detalles traduciado",detailsTraducido)
+                        // res.status(200).json({ result: completionTraducido.data.choices[0].text, query: queryTraducido, message: "Conexión exitoso", exito: true, detailsTraducido })
+                        // details = detailsTraducido;
+                        res.status(200).json({ result: completionTraducido.data.choices[0].text, queryTraducido: inputFrecuent || query, message: "Conexión exitoso", exito: true, details: detailsTraducido ||[{ message: "No se encontro respuesta, intenta otra vez." }] })
+                    })
+                  }
+                  QueryTraducido()
+                }
+                console.log("details con la traducción activda", details)
                 details = details || [{ message: "No se encontro respuesta, intenta otra vez." }]
                 details = details.affectedRows ? [{ message: "Query successfull." }] : details
 
@@ -78,7 +102,7 @@ export default async function (req, res) {
                     }
                   })
                 }
-                res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message: "Conexión exitoso", exito: true, details })
+                // res.status(200).json({ result: completion.data.choices[0].text, query: inputFrecuent || query, message: "Conexión exitoso", exito: true, details })
 
               })
             }
