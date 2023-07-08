@@ -47,7 +47,7 @@ const Querys = ({setHidden,hidden,querys, setQuerys, host, database,user,passwor
                      {
                         querys.length > 0 ? querys.map((query)=>{
                          return <form onSubmit={onSubmit}>
-                                    <button onClick={()=>{HandleClick(query.input,query.input)}} className='btn btn-outline-primary'>{query.query_sin_espacios} ({query.num_repeticiones}) </button>
+                                    <button onClick={()=>{HandleClick(query.query_sin_espacios,query.query_sin_espacios)}} className='btn btn-outline-primary'>{query.query_sin_espacios} ({query.num_repeticiones}) </button>
                                  </form>
                         }): "No existen consultas frecuentes aún."
                      }
