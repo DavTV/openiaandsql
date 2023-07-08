@@ -39,6 +39,7 @@ export default async function (req, res) {
       prompt: generatePrompt(query),
       temperature: 0.6,
       max_tokens: 200,
+      timeout:  60000,
     });
     switch (typeDb) {
       case 0:
