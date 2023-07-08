@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-const View = ({ result, queryResponse, dataQuery }) => {
+const View = ({ result, queryResponse, dataQuery=[] }) => {
   console.log(dataQuery)
-  dataQuery = dataQuery||[];
   const [theads, setTheads] = useState([]);
   const ConvertionArray = () => {
     let ths = [];
