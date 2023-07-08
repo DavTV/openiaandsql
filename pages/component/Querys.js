@@ -2,7 +2,7 @@ import Styles from './Querys.module.css';
 import {useEffect, useState} from 'react';
 import { useFormIA } from "../../hooks/useOpenai";
 
-const Querys = ({setHidden,hidden,querys=[], setQuerys, host, database,user,password, setQueryResponse,dataQuery,setDataQuery,setLoading,setResult,typeDb}) => {
+const Querys = ({setHidden,hidden,querys= querys||[], setQuerys, host, database,user,password, setQueryResponse,dataQuery,setDataQuery,setLoading,setResult,typeDb}) => {
    const [inputFrecuent, setInputFrecuent] = useState("");
    const RenderQuerys= async ()=>{
       const response = await fetch("/api/querys", {

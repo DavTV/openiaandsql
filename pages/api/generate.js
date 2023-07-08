@@ -9,7 +9,7 @@ server.use(bodyParser.json());
 
 
 const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: "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",
 });
 const openai = new OpenAIApi(configuration);
 
