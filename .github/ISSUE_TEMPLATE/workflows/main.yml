@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout repository
+    - name: openiaandsql 
       uses: actions/checkout@v2
 
     - name: Set up Node.js
