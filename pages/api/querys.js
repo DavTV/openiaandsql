@@ -30,9 +30,9 @@ export default function handler(req, res){
                    }else{  
                        console.log("Conexión exitosa querys"); 
                        
-                       connection.query(`SELECT TRIM(BOTH ' ;' FROM query) AS query_sin_espacios, COUNT(*) AS num_repeticiones
+                       connection.query(`SELECT input, TRIM(BOTH ' ;' FROM query) AS query_sin_espacios, COUNT(*) AS num_repeticiones
                        FROM querys
-                       GROUP BY query_sin_espacios
+                       GROUP BY query_sin_espacios, input
                        HAVING COUNT(*) >= 3
                        ORDER BY num_repeticiones DESC;`,(error,results)=>{
                           console.log(results)
