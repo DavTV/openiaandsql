@@ -9,7 +9,7 @@ server.use(bodyParser.json());
 
 
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey:process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 
@@ -45,7 +45,8 @@ export default async function (req, res) {
           host: host,
           user: user,
           password: password,
-          database: database
+          database: database,
+          port:3306
         })
         connection.connect(function (error) {
           try {
