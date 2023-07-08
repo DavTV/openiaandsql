@@ -9,7 +9,8 @@ server.use(bodyParser.json());
 
 
 const configuration = new Configuration({
-  apiKey:process.env.OPENAI_API_KEY,
+  // apiKey:process.env.OPENAI_API_KEY,
+  apiKey:"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",
 });
 const openai = new OpenAIApi(configuration);
 
