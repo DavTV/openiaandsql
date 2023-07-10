@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import FormDB from "./component/FormDB";
 import styles from "./index.module.css";
 import 'bootswatch/dist/lux/bootstrap.min.css';
@@ -22,6 +22,9 @@ export default function Home() {
   const [hidden, setHidden] = useState(false);
   const [loading, setLoading] = useState(false);
   const [querys, setQuerys] = useState([]);
+  const [keyApi,setKeyApi]=useState("");
+  
+  
   return (
     <div className="position-relative">
       <Head>

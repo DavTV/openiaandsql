@@ -11,8 +11,10 @@ export const useFormIA=(setResult, setQueryResponse,user,password,host,database,
       return ;
     }
  console.log(queryInput,user,database,typeDb)
+
     try {
       setLoading(true);
+      
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
