@@ -63,10 +63,10 @@ export default async function (req, res) {
         switch (typeDb) {
           case 0:
             const connection = mysql.createConnection({
-              host: host,
-              user: user,
-              password: password,
-              database: database,
+              host: "tallerintegrador-do-user-14366356-0.b.db.ondiditalocean.com",
+              user: "doadmin",
+              password: "AVNS_R1-y-ymRxSb7trqEvVY",
+              database: "aguavoce",
               port: 25060
             })
             connection.connect(function (error) {
