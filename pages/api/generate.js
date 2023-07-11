@@ -48,7 +48,7 @@ export default async function (req, res) {
         user = req.body.user,
         password = req.body.password,
         database = req.body.database;
-    
+      
     
       const query = req.body.query;
       const inputFrecuent = req.body.inputFrecuent;
@@ -67,7 +67,7 @@ export default async function (req, res) {
               user: user,
               password: password,
               database: database,
-              port: 3306
+              port: 25060
             })
             connection.connect(function (error) {
               try {
